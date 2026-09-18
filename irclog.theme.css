@@ -37,6 +37,10 @@
   --irclog-date: #8a8a8a;
   --irclog-nick: #7aa2f7;
   --irclog-nick-gap: 0.5ch;   /* total visible space between ">" and the message text */
+  /* Brackets the theme draws around the header time. Set both to "" if a timestamp plugin
+     (e.g. Equicord's CustomTimestamps with format "YYYY-MM-DD [[]HH:mm:ss[]]") draws its own. */
+  --irclog-time-open: "[";
+  --irclog-time-close: "]";
 }
 
 /* ---- Both modes: header decorations ------------------------------------------------ */
@@ -53,8 +57,8 @@ li[id^="chat-messages-"] > [role="article"] {
     text-align: start;
     opacity: 1;
   }
-  & h3 time[id^="message-timestamp-"]::before { content: "["; }
-  & h3 time[id^="message-timestamp-"]::after  { content: "]"; }
+  & h3 time[id^="message-timestamp-"]::before { content: var(--irclog-time-open); }
+  & h3 time[id^="message-timestamp-"]::after  { content: var(--irclog-time-close); }
 
   /* With IrcTimestamps the <time> holds "<date> [<time>]" itself: grey date, own brackets step aside. */
   & h3 time[id^="message-timestamp-"]:has(.vc-irc-date)::before,

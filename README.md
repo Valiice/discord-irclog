@@ -35,6 +35,17 @@ That gives you `[23:48] <@nick>  message` with Discord's display names.
 
 Keep **ShowMeYourName** off if you use NickOrUsername; they patch the same spot.
 
+### Equicord users (no source build)
+
+Equicord ships **CustomTimestamps**. Set its compact and cozy formats to `YYYY-MM-DD [[]HH:mm:ss[]]`
+and tell the theme not to draw its own brackets, in QuickCSS:
+
+```css
+:root { --irclog-time-open: ""; --irclog-time-close: ""; }
+```
+
+You get `2026-07-08 [23:48:18]` in one colour (the date can only be grey with the IrcTimestamps userplugin).
+
 ## Customise
 
 Variables at the top of the file, override them in Vencord's QuickCSS:
