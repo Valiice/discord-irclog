@@ -1,0 +1,61 @@
+/**
+ * @name irclog (Equicord)
+ * @description irclog for Equicord's installer build: CustomTimestamps supplies "YYYY-MM-DD [HH:mm:ss]" and this file splits it into a grey date and a white [time] with CSS alone.
+ * @author vali
+ * @version 0.1.0
+ * @source https://github.com/Valiice/discord-irclog
+ * @updateUrl https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog-equicord.theme.css
+ */
+
+/*
+ * Use this file INSTEAD of irclog.theme.css (it imports it).
+ *
+ * Requires Equicord's CustomTimestamps plugin with both the compact and the cozy format set to:
+ *     YYYY-MM-DD [[]HH:mm:ss[]]
+ * (moment.js escaping: "[[]" is a literal "[" and "[]]" a literal "]".)
+ *
+ * How the grey date works: CustomTimestamps renders the whole stamp as ONE text node, and CSS
+ * cannot colour part of a text node - except through ::first-line. So the timestamp box is laid
+ * out as two equal columns exactly one line tall: the date fills column 1, the bracketed time no
+ * longer fits and wraps into column 2, and ::first-line styles just the date. The columns are
+ * right-aligned and sized to the (wider) bold time; the box is pulled left by the width
+ * difference so the date still starts at the margin.
+ */
+
+@import url("https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog.theme.css");
+
+:root {
+  /* CustomTimestamps draws the [ ] itself. */
+  --irclog-time-open: "";
+  --irclog-time-close: "";
+
+  /* Advance widths in DejaVu Sans (tabular digits, so every date/time is the same width).
+     Re-measure these if you change --irclog-font. */
+  --irclog-date-w: 5.812em;   /* "2026-07-08", regular weight */
+  --irclog-time-w: 5.9em;     /* "[23:48:18]", bold */
+  --irclog-date-gap: 0.32em;  /* one space */
+}
+
+li[id^="chat-messages-"] > [role="article"] h3 > span:has(time[id^="message-timestamp-"]) {
+  display: inline-block;
+  vertical-align: baseline;
+  white-space: normal;
+  line-height: inherit;
+  overflow: visible;
+  column-count: 2;
+  column-gap: var(--irclog-date-gap);
+  column-fill: auto;
+  text-align: end;
+  width: calc(2 * var(--irclog-time-w) + var(--irclog-date-gap));
+  height: 1lh;
+  margin-left: calc(var(--irclog-date-w) - var(--irclog-time-w));
+  margin-right: var(--irclog-date-gap);
+
+  &::first-line {
+    color: var(--irclog-date);
+    font-weight: 400;
+  }
+
+  /* Discord's absolutely positioned copy-only "[" "]" helpers become visible in this layout. */
+  & time > i { display: none; }
+}

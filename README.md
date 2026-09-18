@@ -37,14 +37,18 @@ Keep **ShowMeYourName** off if you use NickOrUsername; they patch the same spot.
 
 ### Equicord users (no source build)
 
-Equicord ships **CustomTimestamps**. Set its compact and cozy formats to `YYYY-MM-DD [[]HH:mm:ss[]]`
-and tell the theme not to draw its own brackets, in QuickCSS:
+Use **`irclog-equicord.theme.css`** instead of the base file (it imports it) and enable Equicord's
+built-in **CustomTimestamps** with both formats set to `YYYY-MM-DD [[]HH:mm:ss[]]`:
 
-```css
-:root { --irclog-time-open: ""; --irclog-time-close: ""; }
-```
+1. Vencord/Equicord settings > Themes > **Online Themes**:
+   ```
+   https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog-equicord.theme.css
+   ```
+2. Plugins > **CustomTimestamps** > on > cog > Compact format and Cozy format: `YYYY-MM-DD [[]HH:mm:ss[]]`
+3. Plugin settings are cached by the main process: **fully quit and relaunch Discord** after changing them (`Ctrl+R` is not enough).
+4. Optional: **ReplyTimestamp** (time in reply quotes), **IrcColors** (unique nick colours). Leave **ShowMeYourName** off.
 
-You get `2026-07-08 [23:48:18]` in one colour (the date can only be grey with the IrcTimestamps userplugin).
+Result is the same grey-date look as the userplugin, produced with CSS alone (see the comment at the top of that file for how).
 
 ## Customise
 
