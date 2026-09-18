@@ -36,6 +36,7 @@
   --irclog-time: #ffffff;
   --irclog-date: #8a8a8a;
   --irclog-nick: #7aa2f7;
+  --irclog-nick-gap: 0.5ch;   /* space between <@nick> and the message text */
 }
 
 /* ---- Both modes: header decorations ------------------------------------------------ */
@@ -65,7 +66,7 @@ li[id^="chat-messages-"] > [role="article"] {
 
   /* <@nick> - bold, followed by the IRC double space (Discord already leaves one space). */
   & [id^="message-username-"] {
-    margin-right: 0.75ch;
+    margin-right: var(--irclog-nick-gap);
     font-weight: 700;
   }
   & [id^="message-username-"] > [role="button"]:first-child {

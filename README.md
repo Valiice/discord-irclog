@@ -48,6 +48,7 @@ Variables at the top of the file, override them in Vencord's QuickCSS:
   --irclog-time: #ffffff;
   --irclog-date: #8a8a8a;
   --irclog-nick: #7aa2f7;   /* fallback only - role colours and IrcColors win */
+  --irclog-nick-gap: 0.5ch; /* space between <@nick> and the message text */
 }
 ```
 
