@@ -36,7 +36,7 @@
   --irclog-time: #ffffff;
   --irclog-date: #8a8a8a;
   --irclog-nick: #7aa2f7;
-  --irclog-nick-gap: 0.5ch;   /* space between <@nick> and the message text */
+  --irclog-nick-gap: 0.5ch;   /* total visible space between ">" and the message text */
 }
 
 /* ---- Both modes: header decorations ------------------------------------------------ */
@@ -64,9 +64,10 @@ li[id^="chat-messages-"] > [role="article"] {
     font-weight: 400;
   }
 
-  /* <@nick> - bold, followed by the IRC double space (Discord already leaves one space). */
+  /* <@nick>. Discord leaves a literal space after the name (before the tag badge), about
+     0.32em wide; subtract it so --irclog-nick-gap is the whole gap the eye sees. */
   & [id^="message-username-"] {
-    margin-right: var(--irclog-nick-gap);
+    margin-right: calc(var(--irclog-nick-gap) - 0.32em);
     font-weight: 700;
   }
   & [id^="message-username-"] > [role="button"]:first-child {
