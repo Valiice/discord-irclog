@@ -1,0 +1,171 @@
+/**
+ * @name irclog
+ * @description IRC-log look for Discord. Compact mode: "[HH:MM] <@nick>  message" lines. Default mode: Discord's layout with the IRC header.
+ * @author vali
+ * @version 0.4.0
+ * @source https://github.com/Valiice/discord-irclog
+ * @updateUrl https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog.theme.css
+ */
+
+/*
+ * Compact mode (Settings > Accessibility > Visual Density > Chat Message Display) gets the
+ * full IRC line layout. Default (cozy) mode keeps avatars and grouping and only gets the
+ * header decorations: <@nick> and [time].
+ *
+ * Every selector hangs off un-hashed hooks Discord ships itself
+ * (li#chat-messages-*, [role=article], #message-timestamp-*, #message-username-*,
+ * #message-content-*), so the theme should survive class-hash rotations.
+ *
+ * Nick colour: the default below is only a fallback. Role colours and the
+ * Vencord IrcColors plugin set an inline colour and win over it.
+ *
+ * Pairs with the IrcTimestamps userplugin, which renders "<date> [<time>]"
+ * inside the <time> element; the theme styles those pieces when present.
+ */
+
+/* DejaVu Sans (the font of the reference log) - cdn.jsdelivr.net is on Vencord's CSP allowlist. */
+@import url("https://cdn.jsdelivr.net/npm/@fontsource/dejavu-sans/400.css");
+@import url("https://cdn.jsdelivr.net/npm/@fontsource/dejavu-sans/700.css");
+
+:root {
+  --irclog-font: "DejaVu Sans", Verdana, "Segoe UI", sans-serif;
+  --irclog-size: 14px;
+  --irclog-line: 1.65;
+  --irclog-gutter: 8px;
+  --irclog-text: #dcdcdc;
+  --irclog-time: #ffffff;
+  --irclog-date: #8a8a8a;
+  --irclog-nick: #7aa2f7;
+}
+
+/* ---- Both modes: header decorations ------------------------------------------------ */
+li[id^="chat-messages-"] > [role="article"] {
+  /* [HH:MM] in the header - bold, white, natural width. (Hover timestamps on grouped
+     cozy lines live outside the h3 and are left alone.) */
+  & h3 > span:has(time[id^="message-timestamp-"]) {
+    display: inline;
+    width: auto;
+    margin: 0 1ch 0 0;
+    font-size: inherit;
+    font-weight: 700;
+    color: var(--irclog-time);
+    text-align: start;
+    opacity: 1;
+  }
+  & h3 time[id^="message-timestamp-"]::before { content: "["; }
+  & h3 time[id^="message-timestamp-"]::after  { content: "]"; }
+
+  /* With IrcTimestamps the <time> holds "<date> [<time>]" itself: grey date, own brackets step aside. */
+  & h3 time[id^="message-timestamp-"]:has(.vc-irc-date)::before,
+  & h3 time[id^="message-timestamp-"]:has(.vc-irc-date)::after { content: none; }
+  & .vc-irc-date {
+    color: var(--irclog-date);
+    font-weight: 400;
+  }
+
+  /* <@nick> - bold, followed by the IRC double space. */
+  & [id^="message-username-"] {
+    margin-right: 1ch;
+    font-weight: 700;
+  }
+  & [id^="message-username-"] > [role="button"]:first-child {
+    color: var(--irclog-nick);
+  }
+  & [id^="message-username-"] > [role="button"]:first-child::before { content: "<@"; }
+  & [id^="message-username-"] > [role="button"]:first-child::after  { content: ">"; }
+
+  /* Neutralise Discord "Display Name Styles" (custom font / gradient) so every nick renders the same. */
+  & [id^="message-username-"] > [role="button"]:first-child,
+  & [id^="message-username-"] > [role="button"]:first-child * {
+    font-family: inherit;
+    font-weight: 700;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    animation: none;
+  }
+
+  /* Hide clan-tag / badge chiplets after the nick. */
+  & [id^="message-username-"] > :not([role="button"]:first-child) {
+    display: none;
+  }
+
+  /* Nick at the same size as the message text (Discord bumps .username to 1rem on its own). */
+  & [id^="message-username-"],
+  & [id^="message-username-"] * {
+    font-size: inherit;
+  }
+
+  /* Message text colour. */
+  & [id^="message-content-"] {
+    color: var(--irclog-text);
+  }
+
+  /* Reply preview: a dim, smaller quoted line - "| <@nick> text" - like the source log.
+     Children of the container: spine, [Vencord ReplyTimestamp], arrow badge, nick, tags, text preview. */
+  & [id^="message-reply-context-"] {
+    font-size: 0.85em;
+    color: var(--irclog-date);
+    padding-left: 1ch;
+
+    &::before {
+      content: "│";
+      margin-right: 1ch;
+    }
+
+    /* Discord's arrow badge and clickable spine line. */
+    & > [class*="replyBadge"],
+    & > div[role="button"]:first-of-type { display: none; }
+
+    /* <@nick> - the "@" is Discord's own mention prefix; add only the brackets. */
+    & > span[role="button"][class*="username"],
+    & > span[role="button"][class*="username"] * {
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 700;
+      color: inherit;
+      opacity: 1;
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      animation: none;
+    }
+    & > span[role="button"][class*="username"]::before { content: "<"; }
+    & > span[role="button"][class*="username"]::after  { content: ">"; margin-right: 1ch; }
+
+    /* Tags after the nick (but keep Vencord ReplyTimestamp's time), and the quoted text itself. */
+    & > span:not([role="button"]):not(.vc-reply-timestamp) { display: none; }
+    & > [class*="repliedTextPreview"],
+    & > [class*="repliedTextPreview"] * { color: inherit; opacity: 1; }
+  }
+}
+
+/* ---- Compact mode only: the IRC line layout ---------------------------------------- */
+li[id^="chat-messages-"] > [role="article"][class*="compact"] {
+  /* Row: drop Discord's 80px gutter, group spacing and min-height. */
+  margin-top: 0;
+  padding: 0 12px 0 var(--irclog-gutter);
+  min-height: 0;
+  font-family: var(--irclog-font);
+  font-size: var(--irclog-size);
+  line-height: var(--irclog-line);
+
+  /* Contents: undo the hanging indent so wrapped lines return to the left margin. */
+  & > div {
+    margin-left: 0;
+    padding-left: 0;
+    text-indent: 0;
+  }
+
+  /* Header (timestamp + nick) flows inline with the message text. */
+  & h3 {
+    display: inline;
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  & [id^="message-content-"] {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+}
