@@ -78,6 +78,7 @@ Lines should now read `2026-07-08 [23:48:18] <@nick>  text` with a grey date.
 
 | What you see | Cause and fix |
 |---|---|
+| Only a grey time like `00:27`, then a big gap before the nick | CustomTimestamps is not on (step 4). Turn it on, set both formats, then fully quit and restart Discord (step 6). |
 | Date and time in one white bracket: `[2026-07-08 23:48:18]` | Step 4 did not apply. Check the format string, then do step 6 (full quit). |
 | Double brackets: `[[2026-07-08 ...]]` | You added `irclog.theme.css` instead of `irclog-equicord.theme.css`. Use only the Equicord one. |
 | Header says `Today at 23:48` | CustomTimestamps is off, or Discord was not fully restarted. |
