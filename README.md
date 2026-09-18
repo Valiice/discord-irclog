@@ -22,7 +22,7 @@ Works with [Equicord](https://equicord.org) and [Vencord](https://vencord.dev).
 2. Discord Settings > Accessibility > Visual Density > Chat Message Display > **Compact**.
 3. Settings > Equicord > Themes > **Online Themes**, paste:
    `https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog-equicord.theme.css`
-4. Plugins > **CustomTimestamps** on > cog > set both formats to `YYYY-MM-DD [[]HH:mm:ss[]]`
+4. Plugins > **CustomTimestamps** on > cog > set the **Cozy** and **Compact** boxes (the first two, not the Calendar ones) to `YYYY-MM-DD [[]HH:mm:ss[]]`
 5. Optional: **ReplyTimestamp**, **IrcColors**. Leave **ShowMeYourName** off.
 6. Fully quit Discord from the tray and start it again. `Ctrl+R` is not enough for step 4.
 
@@ -54,14 +54,15 @@ https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog-equicord.th
 GitHub is on Equicord's allowlist, so there is no trust prompt. The chat changes right away.
 
 **4. Turn on the timestamp plugin.**
-Equicord section > Plugins > search `CustomTimestamps` > toggle on > click its cog. Set both
-Compact format and Cozy format to exactly:
+Equicord section > Plugins > search `CustomTimestamps` > toggle on > click its cog. The first
+boxes in that panel are named **Cozy**, **Compact** and **Tooltip**. Set **Cozy** and **Compact** to exactly:
 
 ```
 YYYY-MM-DD [[]HH:mm:ss[]]
 ```
 
-`[[]` and `[]]` are how this format language writes literal brackets.
+`[[]` and `[]]` are how this format language writes literal brackets. Leave Tooltip and the four
+**Calendar formats** further down alone; they are not used.
 
 **5. Optional plugins, same list.**
 - ReplyTimestamp: shows the time of the quoted message in reply lines.
