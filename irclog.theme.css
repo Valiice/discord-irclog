@@ -65,7 +65,7 @@ li[id^="chat-messages-"] > [role="article"] {
 
   /* <@nick> - bold, followed by the IRC double space (Discord already leaves one space). */
   & [id^="message-username-"] {
-    margin-right: 0.5ch;
+    margin-right: 0.75ch;
     font-weight: 700;
   }
   & [id^="message-username-"] > [role="button"]:first-child {
