@@ -1,58 +1,99 @@
 # irclog
 
-A Vencord / BetterDiscord-compatible theme that makes Discord chat look like an IRC log.
+Makes Discord chat look like an IRC log.
 
 ```
 2026-07-08 [23:48:18] <@regena>  I just noticed you
 2026-07-08 [23:48:31] <@regena>  Talking to that lala, I know from aethy
 2026-07-08 [23:49:19] <@xivbestiary>  oh? they apparently have no limits
+│ 23:49 <@regena> that reminds me of one i have
+2026-07-08 [23:50:02] <@astralsight>  sometimes
 ```
 
-- **Compact mode**: full IRC line layout - `[HH:MM] <@nick>  message`, wrapped lines return to the left margin, DejaVu Sans.
-- **Default (cozy) mode**: Discord's own layout (avatars, grouping) with the IRC header `<@nick>  [time]`.
-- Reply previews become a dim quoted line: `| <@nick> quoted text`.
-- Every selector uses Discord's un-hashed hooks (`#chat-messages-*`, `#message-username-*`, `#message-timestamp-*`, `#message-content-*`, `#message-reply-context-*`), so it should survive Discord's class-hash rotations.
+Grey date, white `[time]` with seconds, blue `<@nick>`, wrapped lines return to the left margin,
+reply quotes become a dim `│` line. In Discord's **Default** (cozy) mode you keep avatars and message
+grouping and only the header gets the IRC treatment.
 
-## Install (Vencord)
+It is a theme for [Equicord](https://equicord.org) / [Vencord](https://vencord.dev) (BetterDiscord-compatible CSS).
 
-1. Settings > Accessibility > Visual Density > **Chat Message Display > Compact** (the theme is inert in Default mode apart from the header).
-2. Settings > Vencord > Themes > **Online Themes**, paste:
-   ```
-   https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog.theme.css
-   ```
-   or download the file into the **Local Themes** folder.
+---
 
-That gives you `[23:48] <@nick>  message` with Discord's display names.
+## Quick start (Equicord) — for a new user
 
-## Optional plugins
+You need: Discord desktop, ~5 minutes, no coding.
 
-| Want | Plugin | Where |
-|---|---|---|
-| Unique nick colour per user, like an IRC client | **IrcColors** | built into Vencord |
-| Time of the replied-to message in the quote line | **ReplyTimestamp** | built into Vencord |
-| `2026-07-08 [23:48:18]` - date and seconds in the header | **IrcTimestamps** | userplugin, needs a Vencord source build |
-| Real usernames (`@handle`) instead of display names, keeping nicknames that were actually set | **NickOrUsername** | userplugin, needs a Vencord source build |
+**0. Start from plain Discord.**
+If you already have **Vencord** installed, uninstall it first (run the Vencord installer → *Uninstall*).
+Installing Equicord on top of Vencord breaks Discord's startup (both patchers load), and the fix is a
+Discord reinstall.
 
-Keep **ShowMeYourName** off if you use NickOrUsername; they patch the same spot.
+**1. Install Equicord.**
+Download the installer from <https://equicord.org>, run it, click *Install*. Discord restarts.
 
-### Equicord users (no source build)
+**2. Switch Discord to Compact mode.**
+User Settings (cog, bottom-left) → **Accessibility** → **Visual Density** → **Chat Message Display** → **Compact**.
+(Without this you only get the header styling.)
 
-Use **`irclog-equicord.theme.css`** instead of the base file (it imports it) and enable Equicord's
-built-in **CustomTimestamps** with both formats set to `YYYY-MM-DD [[]HH:mm:ss[]]`:
+**3. Add the theme.**
+User Settings → scroll to the **Equicord** section → **Themes** → **Online Themes** tab → paste on its own line:
 
-1. Vencord/Equicord settings > Themes > **Online Themes**:
-   ```
-   https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog-equicord.theme.css
-   ```
-2. Plugins > **CustomTimestamps** > on > cog > Compact format and Cozy format: `YYYY-MM-DD [[]HH:mm:ss[]]`
-3. Plugin settings are cached by the main process: **fully quit and relaunch Discord** after changing them (`Ctrl+R` is not enough).
-4. Optional: **ReplyTimestamp** (time in reply quotes), **IrcColors** (unique nick colours). Leave **ShowMeYourName** off.
+```
+https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog-equicord.theme.css
+```
 
-Result is the same grey-date look as the userplugin, produced with CSS alone (see the comment at the top of that file for how).
+No trust prompt is needed — GitHub is on Equicord's allowlist. The chat changes immediately.
+
+**4. Turn on the timestamp plugin.**
+Equicord section → **Plugins** → search `CustomTimestamps` → toggle on → click its cog and set **both**
+*Compact format* and *Cozy format* to exactly:
+
+```
+YYYY-MM-DD [[]HH:mm:ss[]]
+```
+
+(`[[]` and `[]]` are how you write literal brackets in this format language.)
+
+**5. Optional plugins, same list.**
+- **ReplyTimestamp** — shows the time of the quoted message in reply lines (`│ 23:49 <@regena> …`).
+- **IrcColors** — gives every user their own nick colour like an IRC client. Off = everyone the same blue.
+- Leave **ShowMeYourName** *off*; it changes the names and removes the `@` in quotes.
+
+**6. Fully quit and relaunch Discord.**
+Right-click the Discord tray icon → *Quit Discord*, then start it again. Plugin settings are cached
+by Discord's main process; `Ctrl+R` is **not** enough for step 4 to take effect.
+
+**Done.** Lines should read `2026-07-08 [23:48:18] <@nick>  text` with a grey date.
+
+### If it doesn't look right
+
+| Symptom | Cause / fix |
+|---|---|
+| Date and time in one white bracket, `[2026-07-08 23:48:18]` | Step 4 not applied — check the format string, then do step 6 (full quit). |
+| Double brackets `[[2026-07-08 …]]` | You added `irclog.theme.css` instead of `irclog-equicord.theme.css`. Use only the Equicord one. |
+| Header shows `Today at 23:48` | CustomTimestamps is off or Discord wasn't fully restarted. |
+| Names look wrong / no `@` in quotes | ShowMeYourName is on. Turn it off. |
+| Wrong font (Verdana/Segoe) | DejaVu Sans is loaded from jsDelivr; give it a moment or check that Equicord didn't block the request (Themes → CSP notice). |
+| Gap before `[` or before `<@` is off | The date/time column widths are tuned to DejaVu Sans. If you changed the font, adjust `--irclog-date-w` / `--irclog-time-w` (see *Customise*). |
+| Everything still looks like normal Discord | Step 2 — you are in Default mode. Only the header is styled there. |
+
+---
+
+## Vencord / building from source
+
+If you run Vencord or Equicord **from source**, use the base theme plus the userplugins in [`plugins/`](plugins/):
+
+- Themes → Online Themes: `https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog.theme.css`
+- Copy `plugins/ircTimestamps` (and optionally `plugins/nickOrUsername`) into `src/userplugins/`, `pnpm build`, restart.
+- Enable **IrcTimestamps** — it renders the date in its own `<span class="vc-irc-date">`, which the theme styles grey. No CustomTimestamps needed.
+- **NickOrUsername** (optional): shows a nickname only if one is actually set (server, then friend), otherwise the `@username`, never the display name. Keep ShowMeYourName off with it.
+
+Installer builds of either mod cannot load userplugins; that is what the Equicord variant above is for.
+
+---
 
 ## Customise
 
-Variables at the top of the file, override them in Vencord's QuickCSS:
+All knobs are CSS variables. Put overrides in Settings → Themes → **QuickCSS**:
 
 ```css
 :root {
@@ -64,7 +105,22 @@ Variables at the top of the file, override them in Vencord's QuickCSS:
   --irclog-date: #8a8a8a;
   --irclog-nick: #7aa2f7;   /* fallback only - role colours and IrcColors win */
   --irclog-nick-gap: 0.5ch; /* total space between ">" and the message text; 0 = touching */
+  --irclog-time-open: "[";  /* brackets the base theme draws around the time (the Equicord variant sets both to "") */
+  --irclog-time-close: "]";
+}
+
+/* Equicord variant only - column widths of the split timestamp, tuned to DejaVu Sans */
+:root {
+  --irclog-date-w: 5.812em;  /* width of "2026-07-08" */
+  --irclog-time-w: 5.9em;    /* width of "[23:48:18]" in bold */
+  --irclog-date-gap: 0.32em; /* one space */
 }
 ```
 
-DejaVu Sans is loaded from jsDelivr (on Vencord's CSP allowlist); swap `--irclog-font` for any installed font.
+## How it holds up
+
+Every selector uses ids Discord ships un-hashed (`#chat-messages-*`, `#message-username-*`,
+`#message-timestamp-*`, `#message-content-*`, `#message-reply-context-*`), so the theme should survive
+Discord's class-hash rotations. The Equicord variant's grey date is pure CSS: the timestamp is laid out as
+two one-line columns so `::first-line` can colour just the date — see the comment at the top of
+`irclog-equicord.theme.css`.
