@@ -16,6 +16,18 @@ grouping and only the header gets the IRC treatment.
 
 It is a theme for [Equicord](https://equicord.org) / [Vencord](https://vencord.dev) (BetterDiscord-compatible CSS).
 
+## TL;DR (Equicord)
+
+1. If you have Vencord, uninstall it first. Then install Equicord from <https://equicord.org>.
+2. Discord Settings → Accessibility → Visual Density → Chat Message Display → **Compact**.
+3. Settings → Equicord → Themes → **Online Themes**, paste:
+   `https://raw.githubusercontent.com/Valiice/discord-irclog/main/irclog-equicord.theme.css`
+4. Plugins → **CustomTimestamps** on → cog → set *both* formats to `YYYY-MM-DD [[]HH:mm:ss[]]`
+5. Optional: **ReplyTimestamp**, **IrcColors**. Leave **ShowMeYourName** off.
+6. **Fully quit Discord from the tray and relaunch** (`Ctrl+R` is not enough for step 4).
+
+Details, and what to do if it looks wrong, below.
+
 ---
 
 ## Quick start (Equicord) — for a new user
